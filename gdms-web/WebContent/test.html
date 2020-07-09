@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AJAX练习</title>
+<script src="js/jquery-3.2.1.min.js"></script>
+
+<style>
+* {
+	font-size: 30px
+}
+
+select {
+	width: 150px;
+	height: 45px;
+}
+</style>
+</head>
+<body>
+	<h1>AJAX练习</h1>
+	请选择收货地址：
+	<select id="prov"></select>
+	<select id="city"></select>
+	<select id="county"></select>
+	<textarea rows="4" cols="30"></textarea>
+</body>
+
+<script type="text/javascript">
+function initProv(target, pid) {
+	$.ajax({
+
+		url : "admin/area/provlist", //请求的URI
+		data : {
+			"parentid" : pid
+		}, //提交的参数数据
+		type : "GET", //请求的方式一般获取用GET提交用POST
+		success : function(result) { //成功之后做什么
+			var json = eval(result); //把返回的json对象接收成js中的json对象
+			var list = json.data; //得到对象中的集合
+			
+			target.options.length = 0;//清空当前下拉选项
+			for (var i = 0; i < list.length; i++) {
+				var o = list[i];
+				var op = new Option(o.name, o.areaid);
+				target.options.add(op);//向下拉框增加选项
+			}
+			$(target).trigger("change");//触发target的change事件
+		}
+
+	});
+}
+
+onload = function() {
+	//初始化
+	initProv(document.getElementById("prov"), 0);
+	$("#prov").change(function() {
+		//那高当前省份id,发起新的查询,得到city
+		var id = $(this).val();
+		initProv(document.getElementById("city"), id);
+	});
+ 	$("#city").change(function() {
+		//那高当前省份id,发起新的查询,得到city
+		var id = $(this).val();
+		initProv(document.getElementById("county"), id);
+	}); 
+}
+</script>
+</html>

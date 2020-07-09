@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--此文件要向MyBatis.xml声明 -->
+<mapper namespace="com.oracle.gdms.dao.AreaDao">
+	<cache></cache><!--开启缓存  -->
+	<select id="findAllProv" resultType="Area" parameterType="Area">
+		SELECT * FROM tbl_area
+		<where>
+			<if test="parentid != 0">
+				AND parentid=#{parentid}
+			</if>
+			<if test="parentid ==0">
+				AND type = 1
+			</if>
+		</where>
+	</select>
+	<select id="findNameById" parameterType="int" resultType="Area">
+		SELECT name FROM tbl_area WHERE areaid = #{areaid}
+	</select>
+</mapper>
