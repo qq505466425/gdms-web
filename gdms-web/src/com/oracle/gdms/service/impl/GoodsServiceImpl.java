@@ -39,13 +39,14 @@ public class GoodsServiceImpl extends BaseService implements GoodsService {
 		return obj;
 	}
 	
-	public static void main(String[] args) {
-		GoodsService ser = new GoodsServiceImpl();
-		PageModel<GoodsModel> p = ser.findByPage(1, 2);
-		System.out.println(p.getTotal());
-		for (GoodsModel m : p.getData()) {
-			System.out.println("id="+m.getGoodsid()+"	name="+m.getName());
-		}
-	
-	}
+//	public static void main(String[] args) {
+//		GoodsService ser = new GoodsServiceImpl();
+//		PageModel<GoodsModel> p = ser.findByPage(1, 2);
+//		System.out.println(p.getTotal());
+//		for (GoodsModel m : p.getData()) {
+//			System.out.println("id="+m.getGoodsid()+"	name="+m.getName());
+//			System.out.println("类别"+m.getType().getName());
+//		}
+//	
+//	}
 }

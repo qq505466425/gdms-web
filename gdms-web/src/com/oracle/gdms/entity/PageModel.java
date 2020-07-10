@@ -7,7 +7,7 @@ public class PageModel<T> { //  T 泛型 通配类型
 	private int total; // 总页数
 	private List<T> data; // 数据集
 
-	public static final int ROWS = 2; // 显示行数的常量 在配置文件写更好
+	public static final int ROWS = 5; // 显示行数的常量 在配置文件写更好
 
 	public int getCurrent() {
 		return current;
