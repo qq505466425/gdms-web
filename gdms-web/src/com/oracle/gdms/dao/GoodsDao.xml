@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--此文件要向MyBatis.xml声明 -->
+<mapper namespace="com.oracle.gdms.dao.GoodsDao">
+	
+	<select id="findByPage" parameterType="java.util.Map" resultType="Goods">
+		SELECT * FROM tbl_gdms_goods
+		LIMIT #{offset},#{rows}
+	</select>
+	<select id="findCount" resultType="int">
+		SELECT COUNT(*) FROM tbl_gdms_goods
+	</select>
+</mapper>

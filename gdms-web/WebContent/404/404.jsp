@@ -4,9 +4,9 @@
 <head>
 <base href="http://localhost:8080/gdms-web/">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>404</title>
 </head>
 <body>
-
+	
 </body>
 </html>
