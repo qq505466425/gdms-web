@@ -11,6 +11,9 @@ public interface GoodsDao {
 	List<GoodsModel> findByPage(Map<String,Integer> map);
 
 	int findCount();
+
+
+	GoodsModel findById(int goodsid);
 	
 	
 }

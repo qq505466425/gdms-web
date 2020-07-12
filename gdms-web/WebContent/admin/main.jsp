@@ -175,7 +175,7 @@
 		</div>
 
 		<h2>
-			<span class="icon-user"></span>基本设置
+			<span class="icon-user"></span>商品管理
 		</h2>
 		<ul style="display: block">
 			<li><a href="admin/goods/list.php"  ><span

@@ -3,6 +3,7 @@ package com.oracle.gdms.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONObject;
 import com.oracle.gdms.dao.GoodsDao;
 import com.oracle.gdms.entity.GoodsModel;
 import com.oracle.gdms.entity.PageModel;
@@ -25,7 +26,7 @@ public class GoodsServiceImpl extends BaseService implements GoodsService {
 			obj.setTotal(total);
 			// 计算起始位置
 			int offset = (pageNumber - 1) * rows;
-			Map<String,Integer> map = new HashMap<>();
+			Map<String, Integer> map = new HashMap<>();
 			map.put("offset", offset);
 			map.put("rows", rows);
 			obj.setData(dao.findByPage(map));// 查数据集
@@ -38,15 +39,28 @@ public class GoodsServiceImpl extends BaseService implements GoodsService {
 
 		return obj;
 	}
-	
-//	public static void main(String[] args) {
-//		GoodsService ser = new GoodsServiceImpl();
-//		PageModel<GoodsModel> p = ser.findByPage(1, 2);
-//		System.out.println(p.getTotal());
-//		for (GoodsModel m : p.getData()) {
-//			System.out.println("id="+m.getGoodsid()+"	name="+m.getName());
-//			System.out.println("类别"+m.getType().getName());
-//		}
-//	
-//	}
+
+	@Override
+	public String pushGoods(int goodsid) {
+		try {
+			session = GDMSUtil.getSesstion();
+			GoodsDao dao = session.getMapper(GoodsDao.class);
+			GoodsModel goods = dao.findById(goodsid);
+			JSONObject json = new JSONObject();
+			json.put("goods", goods);
+			String jsonstr = json.toJSONString();
+			push(jsonstr);//执行推送
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			free();
+		}
+		return "";
+	}
+
+	private void push(String jsonstr) {
+		
+		
+	}
+
 }

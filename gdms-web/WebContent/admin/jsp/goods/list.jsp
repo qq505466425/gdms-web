@@ -86,15 +86,20 @@
 						<td>${o.spec}</td>
 						<td><font color="#00CC99">￥${o.price}</font></td>
 						<td>${o.amount}</td>
-						<td>
-							<f:formatDate value="${o.makedate}"/>
-						</td>
-						<td>${o.push}</td>
+						<td><f:formatDate value="${o.makedate}" /></td>
+						<td><c:if test="${o.push}">
+								已推送
+							</c:if> <c:if test="${!o.push}">
+								<a class="button border-main" href="javascript:void(0)"
+									onclick="doPush(${o.goodsid})"><span class="icon-tint"></span>
+									推送</a>
+							</c:if></td>
 						<td><div class="button-group">
 								<a class="button border-main" href="add.html"><span
 									class="icon-edit"></span> 修改</a> <a class="button border-red"
-									href="javascript:void(0)" onclick="return del(1,1,1)"><span
-									class="icon-trash-o"></span> 删除</a>
+									href="javascript:void(0)" onclick="deldata(this) "> <span
+									class="icon-trash-o"></span> 删除
+								</a>
 							</div></td>
 					</tr>
 				</c:forEach>
@@ -107,7 +112,7 @@
 				<tr>
 					<td style="text-align: left; padding: 19px 0; padding-left: 20px;"><input
 						type="checkbox" id="checkall" /> 全选</td>
-					<td colspan="7" style="text-align: left; padding-left: 20px;"><a
+					<td colspan="8" style="text-align: left; padding-left: 20px;"><a
 						href="javascript:void(0)" class="button border-red icon-trash-o"
 						style="padding: 5px 15px;" onclick="DelSelect()"> 删除</a> <a
 						href="javascript:void(0)"
@@ -150,15 +155,54 @@
 					</select></td>
 				</tr>
 				<tr>
-					<td colspan="8"><div class="pagelist">
-							<a href="">上一页</a> <span class="current">1</span><a href="">2</a><a
-								href="">3</a><a href="">下一页</a><a href="">尾页</a>
-						</div></td>
+					<td colspan="9">
+						<div class="pagelist">
+							共${model.total }页
+							<c:if test="${model.current == 1 }">
+								<a>首页</a>
+							</c:if>
+							<c:if test="${model.current != 1 }">
+								<a href="admin/goods/list.php">首页</a>
+							</c:if>
+
+							${model.nav }
+
+							<c:if test="${model.current == model.total }">
+								<a>尾页</a>
+							</c:if>
+							<c:if test="${model.current != model.total }">
+								<a href="admin/goods/list.php?pn=${model.total}">尾页</a>
+							</c:if>
+						</div>
+					</td>
 				</tr>
 			</table>
 		</div>
 	</form>
 	<script type="text/javascript">
+		function doPush(goodsid){
+			$.ajax({
+				url:"admin/goods/push.php",
+				type:"POST",
+				data:{"goodsid":goodsid},
+				success:function(result){
+					var json = eval(result);
+					if (json.data.code !=0) {
+						qipao(json.data.msg);
+					}else{
+						qipao("推送成功!");
+					}
+				}
+				
+			});
+		}
+	
+	
+		function deldata(t) {
+			var $t = $(t);
+			queren("你不会真的要删除此记录吧?不会把不会吧?", $t.parent().parent().parent());
+		}
+
 		//搜索
 		function changesearch() {
 

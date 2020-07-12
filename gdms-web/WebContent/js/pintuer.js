@@ -20,6 +20,25 @@ function qipao(msg,$obj){
 	    d.close().remove();
 	}, 2000);
 }
+/**
+ * 弹出确认框的方法
+ * @returns boolean
+ */
+function queren(msg,$tr){
+	var d = dialog({
+		title : "删除",
+		content : msg,
+		ok : function(){
+			console.log("牛批,此处省略2000行代码调用业务逻辑删除")
+			$tr.remove();
+		},
+		cancel: function(){
+			console.log("就这?就这?就这?就这?就这?就这?就这?就这?就这?")
+			d.close().remove();
+		}
+	});
+	d.showModal().width(400);
+}
 
 
 $(function(){
