@@ -33,7 +33,7 @@ public class GoodsPush extends HttpServlet {
 		String gid = request.getParameter("goodsid");// 从请求中得到要推送的商品ID
 		if (gid == null) {
 			ent.setCode(1001);
-			ent.setMsg("商品ID缺失");
+			ent.setMessage("商品ID缺失");
 		} else {
 			GoodsService service = new GoodsServiceImpl();
 			int goodsid = Integer.parseInt(gid);

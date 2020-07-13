@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ResponseEntity {
 
 	private int code;
-	private String msg;
+	private String message;
 	private String data;
 
 	public int getCode() {
@@ -16,13 +16,14 @@ public class ResponseEntity {
 	public void setCode(int code) {
 		this.code = code;
 	}
+	
 
-	public String getMsg() {
-		return msg;
+	public String getMessage() {
+		return message;
 	}
 
-	public void setMsg(String msg) {
-		this.msg = msg;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	public String getData() {

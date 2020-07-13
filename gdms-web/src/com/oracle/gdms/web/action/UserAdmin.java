@@ -56,7 +56,7 @@ public class UserAdmin extends HttpServlet {
 					
 					ResponseEntity entity = new ResponseEntity();
 					entity.setCode(0);
-					entity.setMsg(fileName);
+					entity.setMessage(fileName);
 					entity.setData("<img width='200' height='200' src='images/upload/"+ fileName+"'>");
 					JSONObject j = new JSONObject();
 					j.put("entity", entity);
