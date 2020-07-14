@@ -1,11 +1,10 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="f" %>
-
 <jsp:useBean id="date" class="java.util.Date" scope="page"/>
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+<base href="${ href }">
 <title>系统信息</title>
 <link rel="stylesheet" href="css/pintuer.css">
 <style type="text/css">

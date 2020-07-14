@@ -8,6 +8,8 @@ import javax.ws.rs.core.MediaType;
 
 import com.oracle.gdms.entity.Model;
 import com.oracle.gdms.entity.ResponseEntity;
+import com.oracle.gdms.service.GoodsService;
+import com.oracle.gdms.service.impl.GoodsServiceImpl;
 
 @Path("/goods")
 public class GoodsRest {
@@ -17,10 +19,15 @@ public class GoodsRest {
 	@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
 	@Consumes(MediaType.APPLICATION_JSON + ";charset=UTF-8")
 	public ResponseEntity pushGoods(Model goods) {
-		System.out.println(goods.getGoods().getName());
+		System.out.println("商品名=  "+goods.getGoods().getName());
+		GoodsService service = new GoodsServiceImpl();
+		int count = service.add(goods.getGoods());
+		if (count >0) {
+			System.out.println("插入成功");
+		}
 		ResponseEntity resp = new ResponseEntity();
-		resp.setCode(9527);
-		resp.setMessage("别推了,推锤子呢");
+		resp.setCode(0);
+		resp.setMessage("这波啊,这波是肉蛋葱鸡");
 
 		return resp;
 	}

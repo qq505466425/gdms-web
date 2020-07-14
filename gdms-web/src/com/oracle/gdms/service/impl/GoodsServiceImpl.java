@@ -15,11 +15,13 @@ import org.apache.http.util.EntityUtils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.oracle.gdms.dao.GoodsDao;
+import com.oracle.gdms.entity.GoodsEntity;
 import com.oracle.gdms.entity.GoodsModel;
 import com.oracle.gdms.entity.PageModel;
 import com.oracle.gdms.entity.ResponseEntity;
 import com.oracle.gdms.service.GoodsService;
 import com.oracle.gdms.util.GDMSUtil;
+import com.oracle.gdms.web.listener.AppListener;
 
 public class GoodsServiceImpl extends BaseService implements GoodsService {
 
@@ -60,37 +62,65 @@ public class GoodsServiceImpl extends BaseService implements GoodsService {
 			JSONObject json = new JSONObject();
 			json.put("goods", goods);
 			String jsonstr = json.toJSONString();
-			push(jsonstr);//执行推送
+			
+			ResponseEntity result = push(jsonstr);// 执行推送
+			if (result != null && result.getCode() == 0) {
+				dao.updatePush(goodsid);//设置推送状态为已推送
+				session.commit();
+				return result.getMessage();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			free();
 		}
-		return "";
+		return "推送失败";
 	}
 
-	private void push(String jsonstr) {
-		//定义一个要推送的地址
-		String url = "http://172.19.133.26:8080/gdms-web/rest/goods/push";
-		
+	// private int updatePush(int goodsid, GoodsDao dao) {
+	// int c = dao.updatePush(goodsid);
+	// return c;
+	// }
+
+	private ResponseEntity push(String jsonstr) {
+		// 定义一个要推送的地址
+		String url = AppListener.getString("pushurl_self");
+
 		HttpPost post = new HttpPost(url);
-		StringEntity entity = new StringEntity(jsonstr, "UTF-8");//构造参数实体
+		StringEntity entity = new StringEntity(jsonstr, "UTF-8");// 构造参数实体
 		entity.setContentType("application/json");
-		post.setEntity(entity);//为post请求设置请求参数
+		post.setEntity(entity);// 为post请求设置请求参数
 		HttpClient client = new DefaultHttpClient();
 		try {
-			//用client对象执行post请求,并把响应放进HttpResponse对象中
+			// 用client对象执行post请求,并把响应放进HttpResponse对象中
 			HttpResponse resp = client.execute(post);
 			HttpEntity resent = resp.getEntity();
-			
+
 			String str = EntityUtils.toString(resent);
 			ResponseEntity re = JSONObject.parseObject(str, ResponseEntity.class);
-			System.out.println("code=  "+re.getCode()+"    msg=  "+re.getMessage());
+			return re;
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return null;
+	}
+
+	@Override
+	public int add(GoodsEntity goods) {
+		try {
+			session = GDMSUtil.getSesstion();
+			GoodsDao dao = session.getMapper(GoodsDao.class);
+			int c = dao.add(goods);
+			session.commit();
+			return c;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			free();
+		}
+		return 0;
 	}
 
 }

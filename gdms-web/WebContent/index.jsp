@@ -3,7 +3,7 @@
 <html lang="zh-cn">
 <head>
 <!--防止转发路径问题  -->
-<base href="http://localhost:8080/gdms-web/">
+<base href="${ href }">
 <title>登录</title>
 <link rel="stylesheet" href="css/pintuer.css">
 <link rel="stylesheet" href="css/admin.css">
@@ -36,25 +36,27 @@
 							style="padding: 30px; padding-bottom: 10px; padding-top: 10px;">
 							<div class="form-group">
 								<div class="field field-icon-right">
-									<input type="text" class="input input-big" name="name" id="name"
-										placeholder="登录账号" data-validate="required:请填写账号" value="yy" /> <span
+									<input type="text" class="input input-big" name="name"
+										id="name" placeholder="登录账号" data-validate="required:请填写账号"
+										value="15347761346" /> <span
 										class="icon icon-phone margin-small"></span>
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="field field-icon-right">
-									<input type="password" class="input input-big" name="password" id="password"
-										placeholder="登录密码" data-validate="required:请填写密码" value="222" /> <span
+									<input type="password" class="input input-big" name="password"
+										id="password" placeholder="登录密码"
+										data-validate="required:请填写密码" value="lanlin" /> <span
 										class="icon icon-key margin-small"></span>
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="field">
-									<input type="text" class="input input-big" name="code" id="code" value="AAAA"
-										placeholder="填写右侧的验证码" data-validate="required:请填写右侧的验证码" />
-									<img src="admin/user/yzm/code.png" alt="" width="100"
-										height="32" class="passcode"
-										style="height: 43px; cursor: pointer;"
+									<input type="text" class="input input-big" name="code"
+										id="code" value="AAAA" placeholder="填写右侧的验证码"
+										data-validate="required:请填写右侧的验证码" /> <img
+										src="admin/user/yzm/code.png" alt="" width="100" height="32"
+										class="passcode" style="height: 43px; cursor: pointer;"
 										onclick="this.src=this.src+'?'">
 
 								</div>
@@ -87,8 +89,8 @@
 				<form action="admin/user/reg.action" id="regForm" method="post"
 					style="display: none;" onsubmit="return check()">
 					<!--检查提交  -->
-					<input type='hidden' id='errMsg' value="${err_msg}">
-					<input type='hidden' id='regMsg' value="${reg_msg}">
+					<input type='hidden' id='errMsg' value="${err_msg}"> <input
+						type='hidden' id='regMsg' value="${reg_msg}">
 					<!--绑定服务端错误消息  -->
 					<div class="panel loginbox">
 						<div class="text-center margin-big padding-big-top">
@@ -99,7 +101,8 @@
 							<div class="form-group">
 								<div class="field field-icon-right">
 									<input type="text" class="input input-big" name="name"
-										placeholder="手机号码" data-validate="required:请填写手机号" /> <span
+										id="mobile" onblur="testMoblie(this)" placeholder="手机号码"
+										data-validate="required:请填写手机号" /> <span
 										class="icon icon-phone margin-small"></span>
 								</div>
 							</div>
@@ -201,6 +204,35 @@
 		}
 		return true;
 	}
+	function testMoblie(txt) {
+		var v = txt.value;
+		if (v == "") {
+			return;
+		}
+		if (v.length != 11) {
+			qipao("手机号码不合法", $("#mobile"))
+			return;
+		}
+		$.ajax({
+
+			url : "admin/user/mobile.php", //请求的URI
+			data : {
+				"mobile" : v
+			}, //提交的参数数据
+			type : "GET", //请求的方式一般获取用GET提交用POST
+			success : function(result) { //成功之后做什么
+				var json = eval(result); //把返回的json对象接收成js中的json对象
+				qipao(json.data.message,$("#mobile"));
+				
+				if (json.data.code !=0) {
+					$("#mobile").css({"border":"1px solid red"});
+				}else {
+					$("#mobile").css({"border":"1px solid green"});
+				}
+				
+				}
+			});
+	}
 
 	function initProv(target, pid) {
 		$.ajax({
@@ -243,12 +275,12 @@
 			$("#regForm").show();
 			qipao(m, $("#yzm"));//验证码附近弹气泡
 		}
-		
+
 		m = $("#regMsg").val();//获取登录隐藏域的消息
 		if (m != "") {
 			qipao(m);//注册成功弹气泡在中间
 		}
-		
+
 		m = $("#loginMsg").val();//获取登录隐藏域的消息
 
 		if (m != "") {

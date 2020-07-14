@@ -15,4 +15,10 @@ public interface UserService {
 	int add(UserModel user);
 
 	UserModel login(UserModel user);
+	/**
+	 * 检查手机号是否重复
+	 * @param mobile
+	 * @return 
+	 */
+	boolean hasmobile(String mobile);
 }

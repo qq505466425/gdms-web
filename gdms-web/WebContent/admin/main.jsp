@@ -3,7 +3,7 @@
 <html lang="zh-cn">
 <head>
 <!--防止转发路径问题  -->
-<base href="http://localhost:8080/gdms-web/" target="right" >
+<base href="${ href }" target="right" >
 <title>后台管理</title>
 <link rel="stylesheet" href="css/pintuer.css">
 <link rel="stylesheet" href="css/admin.css">
